@@ -1,0 +1,34 @@
+DELETE:
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Delete {
+	public static void main(String[] args) throws SQLException {
+		try {
+		   //Step1: register the driver
+		   DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+		
+		   //Step2: Connect the server by supplying URL(ip,port,uname)
+		   Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db584","root","1234");  //"url","db userName","db password"
+		
+		   //Step3: Create Statement object to send queries to db
+		   Statement statement = connection.createStatement();
+		   int row =statement.executeUpdate("DELETE from employee where eId='103'");
+		   System.out.println(row + " rows(s) updated:");
+		
+		   //Step4: Execute query 
+		   ResultSet rs = statement.executeQuery("select * from employee");
+		   while(rs.next()) {
+			  System.out.println(rs.getString("eId")+"\t" +rs.getString("ename")+"\t" +rs.getString("deptId")+"\t");
+		   }
+		   //Step5: Close the connection
+		   connection.close();
+	    }
+	    catch(SQLException e) {
+		   e.printStackTrace();
+	    }
+	}
+}
