@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Addition</title>
+
+<style>
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background-color:#f2f2f2;
+    font-family:Arial;
+}
+
+.container{
+    background:white;
+    padding:40px;
+    border-radius:10px;
+    box-shadow:0 0 10px gray;
+    text-align:center;
+    width:350px;
+}
+
+h2{
+    color:rgb(101,238,16);
+    font-size:28px;
+}
+
+input{
+    width:90%;
+    padding:10px;
+    margin:10px;
+    font-size:18px;
+}
+
+button{
+    padding:10px 20px;
+    font-size:18px;
+    background-color:#4CAF50;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:20px;
+    font-size:22px;
+    font-weight:bold;
+    color:blue;
+}
+</style>
+
+<script>
+function addition(){
+    let n1 = parseInt(document.getElementById("n1").value);
+    let n2 = parseInt(document.getElementById("n2").value);
+
+    let sum = n1 + n2;
+
+    document.getElementById("result").innerHTML = "Sum = " + sum;
+}
+</script>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Addition</h2>
+
+    <input type="text" id="n1" placeholder="Enter first number">
+
+    <input type="text" id="n2" placeholder="Enter second number">
+
+    <button onclick="addition()">Add</button>
+
+    <div id="result"></div>
+</div>
+
+</body>
+</html>
