@@ -1,0 +1,106 @@
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Weather App&lt;/title&gt;
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/chart.js&quot;&gt;&lt;/script&gt;
+  &lt;style&gt;
+    body {
+      text-align: center;
+      font-family: Arial;
+    }
+    input, button {
+      padding: 8px;
+
+      margin: 5px;
+    }
+    #chartContainer {
+      width: 500px;
+      height: 300px;
+      margin: auto;
+    }
+    #weatherChart {
+      width: 100%;
+      height: 100%;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h3&gt;24WH1A05C5_SAMEEKSHA&lt;/h3&gt;
+&lt;h2&gt;Weather App&lt;/h2&gt;
+&lt;input type=&quot;text&quot; id=&quot;city&quot; placeholder=&quot;Enter city&quot;&gt;
+&lt;button onclick=&quot;getWeather()&quot;&gt;Get Weather&lt;/button&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;div id=&quot;chartContainer&quot;&gt;
+  &lt;canvas id=&quot;weatherChart&quot;&gt;&lt;/canvas&gt;
+&lt;/div&gt;
+&lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+Script.js
+const apiKey = &quot;YOUR API KEY&quot;;
+let chart;
+// Arrow Function + Async/Await
+
+const getWeather = async () =&gt; {
+  const city = document.getElementById(&quot;city&quot;).value;
+  if (!city) {
+    alert(&quot;Please enter a city name&quot;);
+    return;
+  }
+  try {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?q=${city}&amp;appid=${apiKey}&amp;units=metric`
+    );
+    const data = await response.json();
+    console.log(data);
+    // Handle API errors
+    if (data.cod !== &quot;200&quot;) {
+      alert(&quot;Error: &quot; + data.message);
+      return;
+    }
+    processWeather(data, displayGraph);
+  } catch (error) {
+    console.error(&quot;Error:&quot;, error);
+    alert(&quot;Something went wrong!&quot;);
+  }
+};
+// Callback Function
+const processWeather = (data, callback) =&gt; {
+  const temps = data.list.slice(0, 8).map(item =&gt; item.main.temp);
+  const labels = data.list.slice(0, 8).map(item =&gt; item.dt_txt);
+  callback(labels, temps);
+};
+// Promise example (ES6 concept)
+
+const fakePromise = () =&gt; {
+  return new Promise(resolve =&gt; {
+    resolve(&quot;Promise executed&quot;);
+  });
+};
+fakePromise().then(console.log);
+// Graph display
+const displayGraph = (labels, temps) =&gt; {
+  const ctx = document.getElementById(&quot;weatherChart&quot;).getContext(&quot;2d&quot;);
+  //  Destroy old chart
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: &quot;line&quot;,
+    data: {
+      labels: labels,
+      datasets: [{
+        label: &quot;Temperature (°C)&quot;,
+        data: temps,
+        borderWidth: 2,
+        backgroundColor: &quot;rgba(75,192,192,0.2)&quot;,
+        borderColor: &quot;blue&quot;,
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+};
